@@ -12,10 +12,10 @@ npm test
 Versions come from GitVersion in continuous deployment mode (`GitVersion.yml`). The version-source tag is `v0.1.0`. On `main`, each later commit increments the minor version.
 
 ```bash
-npm run version:sync
-npm run distribute
-npm publish
+npm run release
 ```
+
+`release` builds, tests, writes the GitVersion `SemVer` into `package.json`, publishes to npm, commits on the current `feature/<feature>` branch, pushes it, and opens a pull request into `develop`. If that pull request already exists, it adds a comment instead of a second pull request. The branch must already be `feature/<feature>`, created from `develop`. OpenSpec feature delivery is what authorizes that commit.
 
 ## Regenerate the Character API
 

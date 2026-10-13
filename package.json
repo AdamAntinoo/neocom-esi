@@ -9,10 +9,11 @@
   ],
   "scripts": {
     "clean": "rm -rf ./dist",
-    "build": "npm run clean && tsc -p tsconfig.json",
+    "build": "npm run clean && tsc",
     "test": "npm run build && node --test test/*.test.cjs",
     "distribute": "npm test",
-    "version:sync": "npm pkg set version=$(gitversion /nocache /showvariable SemVer)"
+    "version:sync": "npm pkg set version=$(gitversion /nocache /showvariable SemVer)",
+    "release": "node scripts/release.mjs"
   },
   "devDependencies": {
     "typescript": "^5.9.3"
