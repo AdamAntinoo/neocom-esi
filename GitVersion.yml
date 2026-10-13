@@ -1,0 +1,26 @@
+# Continuous deployment. First published version is 0.1.0.
+# The version-source tag is v0.1.0; later versions count up from that tag.
+# On main, each commit increments the minor component.
+assembly-informational-format: '{FullSemVer}'
+mode: ContinuousDeployment
+branches:
+  main:
+    regex: ^main$
+    mode: ContinuousDeployment
+    increment: Minor
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: false
+  pull-request:
+    mode: ContinuousDelivery
+    tag: PullRequest
+    increment: Patch
+    prevent-increment-of-merged-branch-version: false
+    tag-number-pattern: '[/-](?<number>\d+)[-/]'
+    track-merge-target: false
+    regex: (pull|pull\-requests|pr|[0-9]+)[/-]
+    tracks-release-branches: false
+    is-release-branch: false
+ignore:
+  sha: []
+merge-message-formats: {}
+assembly-file-versioning-format: '{Major}.{Minor}.{Patch}-{CommitsSinceVersionSource}'
