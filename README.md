@@ -15,7 +15,7 @@ Versions come from GitVersion in continuous deployment mode (`GitVersion.yml`). 
 npm run release
 ```
 
-`release` builds, tests, writes the GitVersion `SemVer` into `package.json`, publishes to npm, commits on the current `feature/<feature>` branch, pushes it, and opens a pull request into `develop`. If that pull request already exists, it adds a comment instead of a second pull request. The branch must already be `feature/<feature>`, created from `develop`. OpenSpec feature delivery is what authorizes that commit.
+`release` builds, tests, writes the GitVersion major.minor.patch into `package.json`, publishes to npm, commits on the current `feature/<feature>` branch, pushes it, and opens a pull request into `develop`. If that pull request already exists, it adds a comment instead of a second pull request. The branch must already be `feature/<feature>`, created from `develop`. OpenSpec feature delivery is what authorizes that commit.
 
 ## Regenerate the Character API
 

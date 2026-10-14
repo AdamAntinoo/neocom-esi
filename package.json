@@ -1,6 +1,6 @@
 {
   "name": "neocom-esi",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "EVE Online ESI classes and tools for NEOCOM",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -12,10 +12,11 @@
     "build": "npm run clean && tsc",
     "test": "npm run build && node --test test/*.test.cjs",
     "distribute": "npm test",
-    "version:sync": "npm pkg set version=$(gitversion /nocache /showvariable SemVer)",
+    "version:sync": "npm pkg set version=$(gitversion /nocache /showvariable MajorMinorPatch)",
     "release": "node scripts/release.mjs"
   },
   "devDependencies": {
+    "figlet": "^1.12.0",
     "typescript": "^5.9.3"
   }
 }

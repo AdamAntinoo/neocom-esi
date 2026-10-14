@@ -1,14 +1,23 @@
 import { execSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { basename } from 'node:path';
+import figlet from 'figlet';
 
 function run(command) {
   console.log(`\n> ${command}`);
-  execSync(command, { stdio: 'inherit' });
+  try {
+    execSync(command, { stdio: 'inherit' });
+  } catch (error) {
+    process.exit(error.status ?? 1);
+  }
 }
 
 function capture(command) {
   return execSync(command, { encoding: 'utf8' }).trim();
 }
+
+const scriptName = basename(process.argv[1] ?? 'release.mjs', '.mjs');
+const version = capture('gitversion /nocache /showvariable MajorMinorPatch');
+console.log(figlet.textSync(`${scriptName} ${version}`));
 
 const branch = capture('git rev-parse --abbrev-ref HEAD');
 if (!/^feature\/[A-Za-z0-9][A-Za-z0-9._-]*$/.test(branch)) {
@@ -19,9 +28,22 @@ if (!/^feature\/[A-Za-z0-9][A-Za-z0-9._-]*$/.test(branch)) {
 run('npm run build');
 run('npm test');
 run('npm run version:sync');
-run('npm publish');
+if (!process.env.NPM_TOKEN) {
+  console.error(
+    'npm publish needs a granular access token in ~/.zshenv as NPM_TOKEN. Create it at https://www.npmjs.com/settings/~/tokens with Read and write on all packages and Bypass two-factor authentication enabled.',
+  );
+  process.exit(1);
+}
+console.log('\n> npm publish');
+try {
+  execSync('npm publish', { stdio: 'inherit' });
+} catch (error) {
+  console.error(
+    'npm refused the publish. Replace NPM_TOKEN with a granular access token that has Read and write on all packages and Bypass two-factor authentication enabled: https://www.npmjs.com/settings/~/tokens',
+  );
+  process.exit(error.status ?? 1);
+}
 
-const version = JSON.parse(readFileSync('package.json', 'utf8')).version;
 const dirty = capture('git status --porcelain');
 if (dirty) {
   run('git add -A');
